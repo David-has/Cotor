@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cotor – Librărie independentă în centrul vechi</title>
+<meta name="description" content="Cotor: 6.000 de titluri alese de librari, evenimente, o cutie surpriză lunară și un colț de citit. Răsfoiește rafturile și alcătuiește-ți lista de citit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Hanken+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="pagenum" id="pagenum" aria-hidden="true">pag. 1 / 100</div>
+
+<header class="site-header" id="header">
+  <a class="brand" href="#top" aria-label="Cotor, acasă">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 4h16a4 4 0 014 4v20H10a4 4 0 01-4-4zM6 24a4 4 0 014-4h16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg>
+    <span>Cotor</span>
+  </a>
+  <nav class="nav" aria-label="Principal">
+    <a href="#rafturi">Rafturi</a>
+    <a href="#librari">Recomandări</a>
+    <a href="#evenimente">Evenimente</a>
+    <a href="#cutia">Cutia surpriză</a>
+    <a href="#vizita">Vizită</a>
+  </nav>
+  <div class="tools">
+    <button class="list-btn" id="listBtn" type="button" aria-label="Deschide lista de citit">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v18l-5-4-5 4z"/></svg>
+      <span id="listCount">0</span>
+    </button>
+    <button class="theme" id="themeBtn" type="button" role="switch" aria-checked="false" aria-label="Mod luminos">
+      <i></i><span>Noapte</span><span>Zi</span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero" id="top">
+  <div class="bg" aria-hidden="true">
+    <canvas id="words"></canvas>
+    <div class="lamp"></div>
+  </div>
+
+  <div class="hero-copy">
+    <p class="badge"><i></i>Librărie independentă, din 2013</p>
+    <h1>
+      <span class="ln"><span>Cărți pe care nu</span></span>
+      <span class="ln"><span>le-a ales un</span></span>
+      <span class="ln"><span>algoritm.</span></span>
+    </h1>
+    <p class="lead">Cotor e o librărie de cartier din centrul vechi: 6.000 de titluri alese de librari, o cafea bună și un colț de citit în care poți rămâne cât vrei.</p>
+    <div class="hero-actions">
+      <a class="btn mag" href="#rafturi">Răsfoiește rafturile</a>
+      <a class="btn btn-ghost" href="#vizita">Vino în librărie</a>
+    </div>
+  </div>
+
+  <div class="hero-book">
+    <div class="stage3d" id="stage3d">
+      <div class="b3">
+        <div class="f" id="b3front"></div>
+        <div class="bk"></div>
+        <div class="sp"></div>
+        <div class="pg"></div>
+        <div class="tp"></div>
+      </div>
+    </div>
+    <div class="pick">
+      <small>Cartea săptămânii</small>
+      <b>Orașul din cuvinte</b>
+      <button class="btn btn-sm" type="button" data-open="orasul">Vezi cartea</button>
+    </div>
+  </div>
+
+  <div class="spines" id="spines" aria-hidden="true"></div>
+</section>
+
+<div class="ticker" aria-hidden="true"><div class="track" id="tickerTrack"></div></div>
+
+<section class="stats" aria-label="Cotor în cifre">
+  <div><b data-count="6000">0</b><span>de titluri pe rafturi</span></div>
+  <div><b data-count="13">0</b><span>ani de librărie</span></div>
+  <div><b data-count="40">0</b><span>evenimente pe an</span></div>
+  <div><b data-count="1">0</b><span>pisică, pe nume Pagina</span></div>
+</section>
+
+<section class="section reveal" id="rafturi">
+  <h2>Rafturile noastre</h2>
+  <p class="sub">Trage de raft cu mouse-ul sau derulează. Apasă pe o carte ca să-i vezi povestea și să o adaugi în lista ta de citit.</p>
+  <div class="shelf-bar">
+    <div class="chips" id="genres" role="group" aria-label="Gen literar"></div>
+    <div class="arrows">
+      <button type="button" id="prev" aria-label="Cărți anterioare">‹</button>
+      <button type="button" id="next" aria-label="Cărți următoare">›</button>
+    </div>
+  </div>
+  <div class="shelf" id="shelf" tabindex="0" aria-label="Raft cu cărți, derulabil pe orizontală"><ul id="books"></ul></div>
+  <div class="board" aria-hidden="true"></div>
+</section>
+
+<section class="section reveal" id="librari">
+  <h2>Ce recomandă librarii.</h2>
+  <div class="notes" id="notes"></div>
+</section>
+
+<section class="section reveal" id="dispozitie">
+  <div class="split">
+    <div>
+      <h2>Ce citești diseară?</h2>
+      <p class="sub">Spune-ne cum te simți și îți alegem o carte. Fără algoritm, doar după felul în care o găsim noi.</p>
+      <div class="chips" id="moods" role="group" aria-label="Dispoziție"></div>
+    </div>
+    <div class="mood-result" id="moodResult" aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="section reveal" id="evenimente">
+  <h2>Ce se întâmplă la Cotor.</h2>
+  <ul class="events" id="events"></ul>
+</section>
+
+<section class="section reveal" id="cutia">
+  <div class="split">
+    <div>
+      <h2>O cutie cu cărți, în fiecare lună.</h2>
+      <p class="sub">Librarii aleg pentru tine, după genurile pe care le preferi. Transportul e gratuit și poți opri abonamentul oricând.</p>
+    </div>
+    <div class="box-card">
+      <div class="field">
+        <span class="lab" id="bcLab">Câte cărți pe lună</span>
+        <div class="seg" id="boxCount" role="group" aria-labelledby="bcLab">
+          <button type="button" data-v="1" aria-pressed="false">1</button>
+          <button type="button" data-v="2" aria-pressed="true">2</button>
+          <button type="button" data-v="3" aria-pressed="false">3</button>
+        </div>
+      </div>
+      <div class="field">
+        <span class="lab" id="bgLab">Genurile tale</span>
+        <div class="chips" id="boxGenres" role="group" aria-labelledby="bgLab"></div>
+      </div>
+      <div class="field">
+        <span class="lab" id="btLab">Perioadă</span>
+        <div class="seg" id="boxTerm" role="group" aria-labelledby="btLab">
+          <button type="button" data-v="1" aria-pressed="true">Lunar</button>
+          <button type="button" data-v="3" aria-pressed="false">3 luni, −10%</button>
+        </div>
+      </div>
+      <div class="box-out">
+        <b id="boxPrice">0 lei</b><span>pe lună</span>
+      </div>
+      <p class="box-note" id="boxNote"></p>
+      <button type="button" class="btn" id="boxGo">Vreau cutia</button>
+      <p class="form-ok" id="boxOk" role="status" hidden></p>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal" id="vizita">
+  <div class="split">
+    <div>
+      <h2>Ne găsești în centrul vechi.</h2>
+      <p class="place">Strada Cotorului 12, într-o clădire cu obloane verzi.<br>Pagina, pisica noastră, stă de obicei lângă ușă.</p>
+      <p class="open-pill" id="openPill"></p>
+      <form id="news" novalidate>
+        <label>Primești noutățile pe email<input name="email" type="email" autocomplete="email" placeholder="adresa@email.ro" required><small></small></label>
+        <button class="btn" type="submit">Abonează-mă</button>
+        <p class="form-ok" id="newsOk" role="status" hidden></p>
+      </form>
+    </div>
+    <ul class="hours" id="hours"></ul>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer"><span>Cotor</span><p>© 2026 Librăria Cotor. Prezentare conceptuală, cărțile, autorii și prețurile sunt inventate.</p></footer>
+
+<dialog id="dlg" aria-labelledby="dTitle">
+  <div class="sheet">
+    <button class="x" id="dClose" type="button" aria-label="Închide">×</button>
+    <div class="d-cover" id="dCover"></div>
+    <div class="d-info">
+      <p class="d-meta" id="dMeta"></p>
+      <h3 id="dTitle"></h3>
+      <p class="d-author" id="dAuthor"></p>
+      <p id="dDesc"></p>
+      <blockquote id="dQuote"></blockquote>
+      <p class="d-price"><b id="dPrice"></b><span id="dPages"></span></p>
+      <div class="d-actions">
+        <button type="button" class="btn" id="dList"></button>
+        <button type="button" class="btn btn-ghost" id="dRes"></button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Lista de citit" inert>
+  <div class="drawer-head"><h2>Lista mea de citit</h2><button type="button" id="drawerClose" aria-label="Închide lista">×</button></div>
+  <ul id="listItems"></ul>
+  <p class="empty" id="listEmpty">Lista e goală. Apasă pe o carte din rafturi și adaug-o aici.</p>
+  <div class="drawer-foot">
+    <button type="button" class="btn" id="copyList">Copiază lista</button>
+    <button type="button" class="btn btn-ghost" id="clearList">Golește lista</button>
+    <p class="note" id="listNote" role="status" hidden></p>
+  </div>
+</aside>
+</body>
+</html>
